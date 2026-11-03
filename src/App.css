@@ -1,0 +1,127 @@
+/* ==========================================================================
+   App
+   ========================================================================== */
+
+.app {
+  max-width: 1240px;
+  margin: 0 auto;
+  padding: var(--s5) var(--s4) var(--s6);
+}
+
+/* --- Header ------------------------------------------------------------- */
+
+.app-bar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: var(--s4);
+  padding-bottom: var(--s4);
+  border-bottom: 2px solid var(--ink);
+  margin-bottom: var(--s5);
+}
+
+.app-title {
+  font-size: var(--t-xl);
+}
+
+.app-tagline {
+  margin-top: var(--s1);
+  color: var(--ink-muted);
+  font-size: var(--t-sm);
+  max-width: 46ch;
+}
+
+.app-tools {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--s2);
+}
+
+/* --- Add task toggle ---------------------------------------------------- */
+
+.add-toggle {
+  padding: 9px var(--s4);
+  background-color: var(--pine);
+  color: #fff;
+  border: 1px solid var(--pine);
+  border-radius: var(--radius);
+  font-size: var(--t-sm);
+  font-weight: 500;
+  transition: background-color 120ms ease;
+}
+
+.add-toggle:hover {
+  background-color: var(--pine-dark);
+  border-color: var(--pine-dark);
+}
+
+.add-toggle.is-open {
+  background-color: transparent;
+  color: var(--pine);
+}
+
+.add-toggle.is-open:hover {
+  background-color: var(--pine-tint);
+}
+
+/* --- Form slot ---------------------------------------------------------- */
+
+.form-slot {
+  margin-bottom: var(--s5);
+}
+
+/* --- Layout ------------------------------------------------------------- */
+
+.board-layout {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 320px;
+  gap: var(--s5);
+  align-items: start;
+}
+
+.board {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: var(--s4);
+}
+
+.aside {
+  position: sticky;
+  top: var(--s5);
+}
+
+/* --- Responsive --------------------------------------------------------- */
+
+@media (max-width: 1000px) {
+  .board-layout {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .aside {
+    position: static;
+  }
+}
+
+@media (max-width: 720px) {
+  .app {
+    padding: var(--s4) var(--s3) var(--s5);
+  }
+
+  .app-bar {
+    align-items: flex-start;
+  }
+
+  .board {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .search {
+    width: 100%;
+  }
+
+  .app-tools {
+    width: 100%;
+  }
+}

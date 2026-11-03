@@ -1,0 +1,158 @@
+@import url("https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600;700&display=swap");
+
+/* ==========================================================================
+   Design tokens
+   Palette: cool paper greys + pine accent. Colour is for task priority. 
+   Status is by column position.
+   ========================================================================== */
+
+:root {
+  /* Surfaces */
+  --page: #e5e8e4;
+  --column: #f0f2ef;
+  --card: #ffffff;
+  --line: #d0d5cd;
+  --line-strong: #a9b1a6;
+
+  /* Text */
+  --ink: #1b1f1c;
+  --ink-soft: #4a534b;
+  --ink-muted: #6d766f;
+
+  /* Accent */
+  --pine: #1f5c4c;
+  --pine-dark: #163f35;
+  --pine-tint: #dde9e4;
+
+  /* Priority */
+  --low: #4b7a52;
+  --low-tint: #e5efe4;
+  --medium: #a76d16;
+  --medium-tint: #f6ecd9;
+  --high: #ad382a;
+  --high-tint: #f7e4e0;
+
+  /* Geometry */
+  --radius-sm: 3px;
+  --radius: 6px;
+  --spine: 4px;
+
+  /* Space */
+  --s1: 4px;
+  --s2: 8px;
+  --s3: 12px;
+  --s4: 16px;
+  --s5: 24px;
+  --s6: 32px;
+
+  /* Type */
+  --font:
+    "IBM Plex Sans", ui-sans-serif, system-ui, -apple-system, "Segoe UI",
+    Roboto, sans-serif;
+  --t-xs: 12px;
+  --t-sm: 13px;
+  --t-base: 15px;
+  --t-md: 17px;
+  --t-lg: 22px;
+  --t-xl: 30px;
+}
+
+/* ==========================================================================
+   Reset
+   ========================================================================== */
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+* {
+  margin: 0;
+}
+
+html {
+  -webkit-text-size-adjust: 100%;
+}
+
+body {
+  min-height: 100vh;
+  background-color: var(--page);
+  color: var(--ink);
+  font-family: var(--font);
+  font-size: var(--t-base);
+  line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
+}
+
+h1,
+h2,
+h3 {
+  font-weight: 600;
+  line-height: 1.2;
+  letter-spacing: -0.015em;
+  text-wrap: balance;
+}
+
+p {
+  text-wrap: pretty;
+}
+
+ul,
+ol {
+  list-style: none;
+  padding: 0;
+}
+
+button {
+  font: inherit;
+  color: inherit;
+  background: none;
+  border: none;
+  padding: 0;
+  cursor: pointer;
+}
+
+input,
+textarea,
+select {
+  font: inherit;
+  color: inherit;
+}
+
+textarea {
+  resize: vertical;
+}
+
+/* ==========================================================================
+   Focus, motion, selection
+   ========================================================================== */
+
+:focus-visible {
+  outline: 2px solid var(--pine);
+  outline-offset: 2px;
+  border-radius: var(--radius-sm);
+}
+
+:focus:not(:focus-visible) {
+  outline: none;
+}
+
+::selection {
+  background-color: var(--pine-tint);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+#root {
+  min-height: 100vh;
+}

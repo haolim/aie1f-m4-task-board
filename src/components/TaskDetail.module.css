@@ -1,0 +1,130 @@
+/* ==========================================================================
+   TaskDetail — import as: import styles from "./TaskDetail.module.css";
+   ========================================================================== */
+
+.panel {
+  padding: var(--s5);
+  background-color: var(--card);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+}
+
+/* --- Placeholder state -------------------------------------------------- */
+
+.placeholder {
+  padding: var(--s6) var(--s5);
+  background-color: transparent;
+  border: 1px dashed var(--line-strong);
+  border-radius: var(--radius);
+  color: var(--ink-muted);
+  font-size: var(--t-sm);
+  text-align: center;
+}
+
+/* --- Header ------------------------------------------------------------- */
+
+.heading {
+  padding-bottom: var(--s3);
+  margin-bottom: var(--s4);
+  border-bottom: 2px solid var(--ink);
+  font-size: var(--t-xs);
+  font-weight: 600;
+  color: var(--ink-soft);
+}
+
+.title {
+  font-size: var(--t-lg);
+  margin-bottom: var(--s3);
+  overflow-wrap: anywhere;
+}
+
+.description {
+  color: var(--ink-soft);
+  font-size: var(--t-base);
+  line-height: 1.6;
+  max-width: 60ch;
+}
+
+/* --- Meta --------------------------------------------------------------- */
+
+.meta {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: var(--s4);
+  margin-top: var(--s5);
+  padding-top: var(--s4);
+  border-top: 1px solid var(--line);
+}
+
+.metaItem {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  min-width: 0;
+}
+
+.metaLabel {
+  font-size: var(--t-xs);
+  color: var(--ink-muted);
+}
+
+.metaValue {
+  font-size: var(--t-sm);
+  font-weight: 500;
+}
+
+/* --- Priority badge ----------------------------------------------------- */
+
+.badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  align-self: flex-start;
+  padding: 2px 8px;
+  border-radius: 10px;
+  font-size: var(--t-xs);
+  font-weight: 500;
+  line-height: 1.6;
+}
+
+.badge::before {
+  content: "";
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background-color: currentColor;
+}
+
+.badgeLow {
+  background-color: var(--low-tint);
+  color: var(--low);
+}
+
+.badgeMedium {
+  background-color: var(--medium-tint);
+  color: var(--medium);
+}
+
+.badgeHigh {
+  background-color: var(--high-tint);
+  color: var(--high);
+}
+
+/* --- Status chip -------------------------------------------------------- */
+
+.status {
+  align-self: flex-start;
+  padding: 2px 8px;
+  background-color: var(--column);
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  font-size: var(--t-xs);
+  font-weight: 500;
+  color: var(--ink-soft);
+}
+
+@media (max-width: 720px) {
+  .panel {
+    padding: var(--s4);
+  }
+}

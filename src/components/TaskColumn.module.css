@@ -1,0 +1,63 @@
+/* ==========================================================================
+   TaskColumn — import as: import styles from "./TaskColumn.module.css";
+   Column progress is shown by an ink marker (hollow / half / filled).
+   Colour is reserved for priority.
+   ========================================================================== */
+
+.column {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  padding: var(--s3);
+  background-color: var(--column);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+}
+
+.header {
+  display: flex;
+  align-items: center;
+  gap: var(--s2);
+  padding-bottom: var(--s3);
+  margin-bottom: var(--s3);
+  border-bottom: 2px solid var(--ink);
+}
+
+.title {
+  font-size: var(--t-base);
+  font-weight: 600;
+  margin-right: auto;
+}
+
+.count {
+  min-width: 22px;
+  padding: 1px 6px;
+  background-color: var(--card);
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  font-size: var(--t-xs);
+  font-weight: 500;
+  color: var(--ink-soft);
+  text-align: center;
+  font-variant-numeric: tabular-nums;
+}
+
+/* --- List --------------------------------------------------------------- */
+
+.list {
+  display: flex;
+  flex-direction: column;
+  gap: var(--s2);
+  min-height: 80px;
+}
+
+/* --- Empty state -------------------------------------------------------- */
+
+.empty {
+  padding: var(--s5) var(--s3);
+  border: 1px dashed var(--line-strong);
+  border-radius: var(--radius);
+  color: var(--ink-muted);
+  font-size: var(--t-sm);
+  text-align: center;
+}
