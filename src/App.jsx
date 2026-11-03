@@ -1,131 +1,172 @@
-import { useState } from "react";
+import { useCallback, useEffect, useState } from "react";
+import * as api from "./api";
 import AddTaskForm from "./components/AddTaskForm";
 import TaskColumn from "./components/TaskColumn";
 import TaskDetail from "./components/TaskDetail";
 import SearchBar from "./components/SearchBar";
+import ErrorBanner from "./components/ErrorBanner";
 import "./App.css";
 
-const initialTasks = [
-  {
-    id: 1,
-    title: "Design login page",
-    description: "Create wireframes for the login screen.",
-    priority: "high",
-    status: "todo",
-  },
-  {
-    id: 2,
-    title: "Set up project repo",
-    description: "Initialise Git repo and push initial commit.",
-    priority: "medium",
-    status: "done",
-  },
-  {
-    id: 3,
-    title: "Write API docs",
-    description: "Document all REST endpoints.",
-    priority: "low",
-    status: "todo",
-  },
-  {
-    id: 4,
-    title: "Implement auth flow",
-    description: "Build login and registration with JWT.",
-    priority: "high",
-    status: "inprogress",
-  },
-  {
-    id: 5,
-    title: "Fix navigation bug",
-    description: "Sidebar collapses unexpectedly on mobile.",
-    priority: "medium",
-    status: "inprogress",
-  },
-];
+const byId = (a, b) => a.id - b.id;
 
 function App() {
-  const [tasks, setTasks] = useState(initialTasks);
-  const [selectedTask, setSelectedTask] = useState(null);
+  const [tasks, setTasks] = useState([]);
+  const [isLoading, setIsLoading] = useState(true);
+  const [loadError, setLoadError] = useState(null);
+  const [actionError, setActionError] = useState(null);
+  const [busyId, setBusyId] = useState(null);
+  const [selectedId, setSelectedId] = useState(null);
   const [searchTerm, setSearchTerm] = useState("");
 
-  const handleAddTask = (newTask) => {
-    setTasks((prev) => [...prev, newTask]);
-    console.log(newTask);
+  // Fetches the task list. State is only set in the promise callbacks,
+  // after the request finishes.
+  const fetchTasks = useCallback(
+    () =>
+      api
+        .getTasks()
+        .then((data) => {
+          setTasks([...data].sort(byId));
+          setLoadError(null);
+        })
+        .catch((err) => setLoadError(err.message))
+        .finally(() => setIsLoading(false)),
+    [],
+  );
+
+  useEffect(() => {
+    fetchTasks();
+  }, [fetchTasks]);
+
+  const handleRetry = () => {
+    setIsLoading(true);
+    fetchTasks();
   };
 
-  const handleMoveTask = (taskId) => {
-    const nextStatus = {
-      todo: "inprogress",
-      inprogress: "done",
-    };
-    setTasks((prev) =>
-      prev.map((t) =>
-        t.id === taskId ? { ...t, status: nextStatus[t.status] } : t,
-      ),
-    );
-  };
+  // Puts the saved task from the API back into the list.
+  const replaceTask = (saved) =>
+    setTasks((prev) => prev.map((t) => (t.id === saved.id ? saved : t)));
 
-  const handleSelectTask = (task) => {
-    setSelectedTask((prev) => (prev?.id === task.id ? null : task));
-  };
-
-  const handleDeleteTask = (taskId) => {
-    setTasks(tasks.filter((t) => t.id !== taskId));
-    if (selectedTask?.id === taskId) {
-      setSelectedTask(null);
+  // Runs one API call for a task. It shows any error in the banner.
+  // It returns true when the call worked.
+  const runAction = async (id, action) => {
+    setBusyId(id);
+    setActionError(null);
+    try {
+      await action();
+      return true;
+    } catch (err) {
+      setActionError(err.message);
+      return false;
+    } finally {
+      setBusyId(null);
     }
   };
 
+  const handleAddTask = (newTask) =>
+    runAction("new", async () => {
+      const created = await api.createTask(newTask);
+      setTasks((prev) => [...prev, created].sort(byId));
+    });
+
+  const handleCompleteTask = (id) =>
+    runAction(id, async () => replaceTask(await api.completeTask(id)));
+
+  const handleUpdateTask = (id, changes) =>
+    runAction(id, async () => replaceTask(await api.updateTask(id, changes)));
+
+  const handleDeleteTask = (id) =>
+    runAction(id, async () => {
+      await api.deleteTask(id);
+      setTasks((prev) => prev.filter((t) => t.id !== id));
+      setSelectedId((prev) => (prev === id ? null : prev));
+    });
+
+  const handleSelectTask = (task) => {
+    setSelectedId((prev) => (prev === task.id ? null : task.id));
+  };
+
+  const selectedTask = tasks.find((t) => t.id === selectedId) ?? null;
+
   const filteredTasks = tasks.filter((t) =>
-    t.title.toLowerCase().includes(searchTerm.toLowerCase()),
+    (t.title ?? "").toLowerCase().includes(searchTerm.toLowerCase()),
   );
-
   const isFiltering = searchTerm.length > 0;
-
-  const todoTasks = filteredTasks.filter((t) => t.status === "todo");
-  const inProgressTasks = filteredTasks.filter(
-    (t) => t.status === "inprogress",
-  );
-  const doneTasks = filteredTasks.filter((t) => t.status === "done");
+  const pendingTasks = filteredTasks.filter((t) => !t.isCompleted);
+  const completedTasks = filteredTasks.filter((t) => t.isCompleted);
 
   return (
     <div className="app">
-      <div className="app-title">
-        <h3>Task Board</h3>
-      </div>
-      <SearchBar searchTerm={searchTerm} onSearch={setSearchTerm} />
-      <AddTaskForm onAdd={handleAddTask}></AddTaskForm>
-      <div className="board-layout">
-        <div className="board">
-          <TaskColumn
-            title="To Do Tasks"
-            tasks={todoTasks}
-            onMove={handleMoveTask}
-            onSelect={handleSelectTask}
-            onDelete={handleDeleteTask}
-            isFiltering={isFiltering}
-          />
-          <TaskColumn
-            title="In Progress Tasks"
-            tasks={inProgressTasks}
-            onMove={handleMoveTask}
-            onSelect={handleSelectTask}
-            onDelete={handleDeleteTask}
-            isFiltering={isFiltering}
-          />
-          <TaskColumn
-            title="Done Tasks"
-            tasks={doneTasks}
-            onMove={handleMoveTask}
-            onSelect={handleSelectTask}
-            onDelete={handleDeleteTask}
-            isFiltering={isFiltering}
-          />
+      <header className="app-bar">
+        <div>
+          <h1 className="app-title">Task Board</h1>
+          <p className="app-tagline">Tasks from the TaskFlow API.</p>
         </div>
-        <div className="aside">
-          <TaskDetail task={selectedTask} />
+        <div className="app-tools">
+          <SearchBar searchTerm={searchTerm} onSearch={setSearchTerm} />
         </div>
+      </header>
+
+      {loadError && (
+        <ErrorBanner
+          message={loadError}
+          actionLabel={isLoading ? "Retrying…" : "Retry"}
+          actionDisabled={isLoading}
+          onAction={handleRetry}
+        />
+      )}
+      {actionError && (
+        <ErrorBanner
+          message={actionError}
+          actionLabel="Dismiss"
+          onAction={() => setActionError(null)}
+        />
+      )}
+
+      <div className="form-slot">
+        <AddTaskForm onAdd={handleAddTask} isSaving={busyId === "new"} />
       </div>
+
+      {tasks.length === 0 && (isLoading || loadError) ? (
+        // Hide the empty board while loading or when the first load failed,
+        // so "No tasks yet" never shows when the API simply can't be reached.
+        isLoading && !loadError && (
+          <p className="status-message">Loading tasks…</p>
+        )
+      ) : (
+        <div className="board-layout">
+          <div className="board">
+            <TaskColumn
+              title="Pending"
+              tasks={pendingTasks}
+              selectedId={selectedId}
+              busyId={busyId}
+              onSelect={handleSelectTask}
+              onComplete={handleCompleteTask}
+              isFiltering={isFiltering}
+            />
+            <TaskColumn
+              title="Completed"
+              tasks={completedTasks}
+              selectedId={selectedId}
+              busyId={busyId}
+              onSelect={handleSelectTask}
+              onComplete={handleCompleteTask}
+              isFiltering={isFiltering}
+            />
+          </div>
+          <div className="aside">
+            <TaskDetail
+              key={selectedTask?.id ?? "none"}
+              task={selectedTask}
+              isBusy={selectedTask != null && busyId === selectedTask.id}
+              onComplete={handleCompleteTask}
+              onUpdate={handleUpdateTask}
+              onDelete={handleDeleteTask}
+              onClose={() => setSelectedId(null)}
+            />
+          </div>
+        </div>
+      )}
     </div>
   );
 }

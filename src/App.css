@@ -39,6 +39,15 @@
   gap: var(--s2);
 }
 
+/* --- Status message ---------------------------------------------------- */
+
+.status-message {
+  padding: var(--s5);
+  color: var(--ink-muted);
+  font-size: var(--t-sm);
+  text-align: center;
+}
+
 /* --- Add task toggle ---------------------------------------------------- */
 
 .add-toggle {
@@ -83,7 +92,7 @@
 
 .board {
   display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
+  grid-template-columns: repeat(2, minmax(0, 1fr));
   gap: var(--s4);
 }
 

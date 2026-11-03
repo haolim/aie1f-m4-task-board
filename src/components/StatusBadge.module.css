@@ -1,0 +1,31 @@
+.badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  align-self: flex-start;
+  padding: 2px 8px;
+  border-radius: 10px;
+  font-size: var(--t-xs);
+  font-weight: 500;
+  line-height: 1.6;
+  flex: none;
+  white-space: nowrap;
+}
+
+.badge::before {
+  content: "";
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background-color: currentColor;
+}
+
+.pending {
+  background-color: var(--pending-tint);
+  color: var(--pending);
+}
+
+.done {
+  background-color: var(--done-tint);
+  color: var(--done);
+}

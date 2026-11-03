@@ -1,50 +1,55 @@
 import styles from "./TaskCard.module.css";
+import StatusBadge from "./StatusBadge";
 
-const priorityStyle = {
-  high: styles.badgeHigh,
-  low: styles.badgeLow,
-  medium: styles.badgeMedium,
-};
+export default function TaskCard({
+  task,
+  isSelected,
+  isBusy,
+  onSelect,
+  onComplete,
+}) {
+  const handleKeyDown = (e) => {
+    if (e.target !== e.currentTarget) return;
+    if (e.key === "Enter" || e.key === " ") {
+      e.preventDefault();
+      onSelect(task);
+    }
+  };
 
-export default function TaskCard({ task, onMove, onSelect, onDelete }) {
   return (
     <div
-      className={`${styles.card} ${styles[task.priority]}`}
+      className={[
+        styles.card,
+        task.isCompleted ? styles.done : styles.pending,
+        isSelected ? styles.selected : "",
+      ].join(" ")}
+      role="button"
+      tabIndex={0}
+      aria-pressed={isSelected}
       onClick={() => onSelect(task)}
+      onKeyDown={handleKeyDown}
     >
       <p className={styles.title}>{task.title}</p>
+      {task.description && (
+        <p className={styles.description}>{task.description}</p>
+      )}
       <div className={styles.meta}>
-        <p className={`${styles.badge} ${priorityStyle[task.priority]}`}>
-          Priority: {task.priority}
-        </p>
-        <div className={styles.actions}>
-          {task.status !== "done" && (
+        <StatusBadge isCompleted={task.isCompleted} />
+        {!task.isCompleted && (
+          <div className={styles.actions}>
             <button
               type="button"
-              className={styles.move}
+              className={styles.complete}
+              disabled={isBusy}
               onClick={(e) => {
                 e.stopPropagation();
-                onMove(task.id);
+                onComplete(task.id);
               }}
             >
-              Move →
+              {isBusy ? "Saving…" : "Mark complete"}
             </button>
-          )}
-          <button
-            className={styles.delete}
-            type="button"
-            onClick={(e) => {
-              e.stopPropagation();
-              if (
-                window.confirm("Are you sure you want to delete this task?")
-              ) {
-                onDelete(task.id);
-              }
-            }}
-          >
-            Delete
-          </button>
-        </div>
+          </div>
+        )}
       </div>
     </div>
   );

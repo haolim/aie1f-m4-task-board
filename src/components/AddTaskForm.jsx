@@ -1,15 +1,12 @@
 import { useState } from "react";
 import styles from "./AddTaskForm.module.css";
 
-const generateTaskId = () => crypto.randomUUID;
 const emptyForm = {
   title: "",
   description: "",
-  priority: "low",
-  status: "todo",
 };
 
-export default function AddTaskForm({ onAdd }) {
+export default function AddTaskForm({ onAdd, isSaving }) {
   const [form, setForm] = useState(emptyForm);
   const [showAddForm, setShowAddForm] = useState(false);
 
@@ -17,96 +14,87 @@ export default function AddTaskForm({ onAdd }) {
     setForm((prev) => ({ ...prev, [e.target.name]: e.target.value }));
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    onAdd({
-      id: generateTaskId(),
-      title: form.title,
-      description: form.description,
-      priority: form.priority,
-      status: form.status,
-    });
+    const title = form.title.trim();
+    if (!title) return;
 
-    setForm(emptyForm);
-    setShowAddForm(false);
+    // The API assigns the id. Only clear the form once the task is saved,
+    // so nothing is lost if the API can't be reached.
+    const ok = await onAdd({
+      title,
+      description: form.description.trim(),
+    });
+    if (ok) {
+      setForm(emptyForm);
+      setShowAddForm(false);
+    }
   };
 
+  if (!showAddForm) {
+    return (
+      <button
+        type="button"
+        className={styles.submit}
+        onClick={() => setShowAddForm(true)}
+      >
+        Add Task
+      </button>
+    );
+  }
+
   return (
-    <>
-      {!showAddForm && (
+    <form onSubmit={handleSubmit} className={styles.form}>
+      <p className={styles.legend}>New task</p>
+      <div className={styles.grid}>
+        <div className={styles.field}>
+          <label className={styles.label} htmlFor="title">
+            Title
+          </label>
+          <input
+            className={styles.input}
+            id="title"
+            name="title"
+            type="text"
+            value={form.title}
+            onChange={handleChange}
+            required
+            autoFocus
+          />
+        </div>
+        <div className={styles.field}>
+          <label className={styles.label} htmlFor="description">
+            Description <span className={styles.hint}>(optional)</span>
+          </label>
+          <textarea
+            className={styles.textarea}
+            id="description"
+            name="description"
+            value={form.description}
+            onChange={handleChange}
+          />
+        </div>
+      </div>
+      <div className={styles.actions}>
+        <button
+          type="submit"
+          className={styles.submit}
+          disabled={isSaving || !form.title.trim()}
+        >
+          {isSaving ? "Saving…" : "Add Task"}
+        </button>
         <button
           type="button"
-          className={styles.submit}
-          onClick={() => setShowAddForm(true)}
+          className={styles.cancel}
+          disabled={isSaving}
+          onClick={() => {
+            setShowAddForm(false);
+            setForm(emptyForm);
+          }}
         >
-          Add Task
+          Cancel
         </button>
-      )}
-      {showAddForm && (
-        <form onSubmit={handleSubmit} className={styles.form}>
-          <div className={styles.grid}>
-            <div className={`${styles.field} ${styles.fieldWide}`}>
-              <label className={styles.label} htmlFor="title">
-                Title
-              </label>
-              <input
-                className={styles.input}
-                id="title"
-                name="title"
-                type="text"
-                value={form.title}
-                onChange={handleChange}
-                required
-              />
-            </div>
-            <div className={styles.field}>
-              <label className={styles.label} htmlFor="description">
-                Description
-              </label>
-              <textarea
-                className={styles.textarea}
-                id="description"
-                name="description"
-                value={form.description}
-                onChange={handleChange}
-                required
-              />
-            </div>
-            <div className={styles.field}>
-              <label className={styles.label} htmlFor="priority">
-                Priority
-              </label>
-              <select
-                className={styles.select}
-                id="priority"
-                name="priority"
-                value={form.priority}
-                onChange={handleChange}
-                required
-              >
-                <option value="low">Low</option>
-                <option value="medium">Medium</option>
-                <option value="high">High</option>
-              </select>
-            </div>
-          </div>
-          <div className={styles.actions}>
-            <button type="submit" className={styles.submit}>
-              Add Task
-            </button>
-            <button
-              type="button"
-              className={styles.cancel}
-              onClick={() => {
-                setShowAddForm(false);
-                setForm(emptyForm);
-              }}
-            >
-              Cancel
-            </button>
-          </div>
-        </form>
-      )}
-    </>
+      </div>
+    </form>
   );
 }

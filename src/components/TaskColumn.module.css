@@ -1,7 +1,5 @@
 /* ==========================================================================
    TaskColumn — import as: import styles from "./TaskColumn.module.css";
-   Column progress is shown by an ink marker (hollow / half / filled).
-   Colour is reserved for priority.
    ========================================================================== */
 
 .column {

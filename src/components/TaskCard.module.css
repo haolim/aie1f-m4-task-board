@@ -25,31 +25,22 @@
   transform: translateY(-1px);
 }
 
-.card:hover.high {
-  border-left-color: var(--high);
+/* Status spine — pending is amber, completed is green. */
+
+.pending {
+  border-left-color: var(--pending);
 }
 
-.card:hover.medium {
-  border-left-color: var(--medium);
+.done {
+  border-left-color: var(--done);
 }
 
-.card:hover.low {
-  border-left-color: var(--low);
+.card:hover.pending {
+  border-left-color: var(--pending);
 }
 
-/* Priority — apply alongside .card, e.g.
-   className={`${styles.card} ${styles[task.priority]}`} */
-
-.low {
-  border-left-color: var(--low);
-}
-
-.medium {
-  border-left-color: var(--medium);
-}
-
-.high {
-  border-left-color: var(--high);
+.card:hover.done {
+  border-left-color: var(--done);
 }
 
 /* Selected */
@@ -68,48 +59,22 @@
   overflow-wrap: anywhere;
 }
 
+.description {
+  color: var(--ink-soft);
+  font-size: var(--t-sm);
+  line-height: 1.45;
+  overflow-wrap: anywhere;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+  line-clamp: 2;
+  overflow: hidden;
+}
+
 .meta {
   display: flex;
   align-items: center;
   gap: var(--s2);
-}
-
-/* --- Priority badge ----------------------------------------------------- */
-
-.badge {
-  display: inline-flex;
-  align-items: center;
-  gap: 5px;
-  padding: 2px 8px;
-  border-radius: 10px;
-  font-size: var(--t-xs);
-  font-weight: 500;
-  line-height: 1.6;
-  flex: none;
-  white-space: nowrap;
-}
-
-.badge::before {
-  content: "";
-  width: 6px;
-  height: 6px;
-  border-radius: 50%;
-  background-color: currentColor;
-}
-
-.badgeLow {
-  background-color: var(--low-tint);
-  color: var(--low);
-}
-
-.badgeMedium {
-  background-color: var(--medium-tint);
-  color: var(--medium);
-}
-
-.badgeHigh {
-  background-color: var(--high-tint);
-  color: var(--high);
 }
 
 /* --- Actions ------------------------------------------------------------ */
@@ -122,7 +87,7 @@
   flex: none;
 }
 
-.move {
+.complete {
   padding: 3px 10px;
   color: var(--pine);
   border: 1px solid var(--line);
@@ -134,29 +99,14 @@
     border-color 120ms ease;
 }
 
-.move:hover {
+.complete:hover {
   background-color: var(--pine-tint);
   border-color: var(--pine);
 }
 
-.move:disabled {
+.complete:disabled {
   color: var(--ink-muted);
   background-color: transparent;
   border-color: var(--line);
   cursor: not-allowed;
-}
-
-.delete {
-  padding: 3px 8px;
-  color: var(--ink-muted);
-  border-radius: var(--radius-sm);
-  font-size: var(--t-xs);
-  transition:
-    background-color 120ms ease,
-    color 120ms ease;
-}
-
-.delete:hover {
-  background-color: var(--high-tint);
-  color: var(--high);
 }

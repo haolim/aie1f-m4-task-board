@@ -18,7 +18,7 @@
 
 .grid {
   display: grid;
-  grid-template-columns: minmax(0, 2fr) minmax(0, 1fr);
+  grid-template-columns: minmax(0, 1fr);
   gap: var(--s4);
 }
 
@@ -29,10 +29,6 @@
   min-width: 0;
 }
 
-.fieldWide {
-  grid-column: 1 / -1;
-}
-
 .label {
   font-size: var(--t-sm);
   font-weight: 500;
@@ -40,8 +36,7 @@
 }
 
 .input,
-.textarea,
-.select {
+.textarea {
   width: 100%;
   padding: 9px var(--s3);
   background-color: var(--card);
@@ -54,14 +49,12 @@
 }
 
 .input:hover,
-.textarea:hover,
-.select:hover {
+.textarea:hover {
   border-color: var(--line-strong);
 }
 
 .input:focus,
-.textarea:focus,
-.select:focus {
+.textarea:focus {
   outline: none;
   border-color: var(--pine);
   box-shadow: 0 0 0 3px var(--pine-tint);
@@ -77,38 +70,10 @@
   line-height: 1.55;
 }
 
-.select {
-  appearance: none;
-  padding-right: var(--s6);
-  background-image:
-    linear-gradient(45deg, transparent 50%, var(--ink-soft) 50%),
-    linear-gradient(135deg, var(--ink-soft) 50%, transparent 50%);
-  background-position:
-    calc(100% - 18px) 55%,
-    calc(100% - 13px) 55%;
-  background-size:
-    5px 5px,
-    5px 5px;
-  background-repeat: no-repeat;
-}
-
 .hint {
   font-size: var(--t-xs);
+  font-weight: 400;
   color: var(--ink-muted);
-}
-
-.error {
-  font-size: var(--t-xs);
-  color: var(--high);
-}
-
-.inputInvalid {
-  border-color: var(--high);
-}
-
-.inputInvalid:focus {
-  border-color: var(--high);
-  box-shadow: 0 0 0 3px var(--high-tint);
 }
 
 /* --- Actions ------------------------------------------------------------ */
@@ -145,6 +110,11 @@
   color: var(--ink-soft);
   border-radius: var(--radius);
   font-size: var(--t-sm);
+}
+
+.cancel:disabled {
+  opacity: 0.55;
+  cursor: not-allowed;
 }
 
 .cancel:hover {

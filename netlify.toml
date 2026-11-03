@@ -1,0 +1,12 @@
+[build]
+  command = "npm run build"
+  publish = "dist"
+
+[build.environment]
+  NODE_VERSION = "22"
+
+# Send every path to index.html so refreshing the page never gives a 404.
+[[redirects]]
+  from = "/*"
+  to = "/index.html"
+  status = 200
