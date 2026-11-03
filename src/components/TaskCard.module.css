@@ -1,0 +1,112 @@
+/* ==========================================================================
+   TaskCard — import as: import styles from "./TaskCard.module.css";
+   ========================================================================== */
+
+.card {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: var(--s2);
+  width: 100%;
+  padding: var(--s3) var(--s3) var(--s3) var(--s4);
+  background-color: var(--card);
+  border: 1px solid var(--line);
+  border-left: var(--spine) solid var(--line-strong);
+  border-radius: var(--radius);
+  text-align: left;
+  cursor: pointer;
+  transition:
+    border-color 120ms ease,
+    transform 120ms ease;
+}
+
+.card:hover {
+  border-color: var(--line-strong);
+  transform: translateY(-1px);
+}
+
+/* Status spine — pending is amber, completed is green. */
+
+.pending {
+  border-left-color: var(--pending);
+}
+
+.done {
+  border-left-color: var(--done);
+}
+
+.card:hover.pending {
+  border-left-color: var(--pending);
+}
+
+.card:hover.done {
+  border-left-color: var(--done);
+}
+
+/* Selected */
+
+.selected {
+  border-color: var(--pine);
+  box-shadow: 0 0 0 3px var(--pine-tint);
+}
+
+/* --- Content ------------------------------------------------------------ */
+
+.title {
+  font-size: var(--t-base);
+  font-weight: 500;
+  line-height: 1.35;
+  overflow-wrap: anywhere;
+}
+
+.description {
+  color: var(--ink-soft);
+  font-size: var(--t-sm);
+  line-height: 1.45;
+  overflow-wrap: anywhere;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+  line-clamp: 2;
+  overflow: hidden;
+}
+
+.meta {
+  display: flex;
+  align-items: center;
+  gap: var(--s2);
+}
+
+/* --- Actions ------------------------------------------------------------ */
+
+.actions {
+  display: flex;
+  align-items: center;
+  gap: var(--s1);
+  margin-left: auto;
+  flex: none;
+}
+
+.complete {
+  padding: 3px 10px;
+  color: var(--pine);
+  border: 1px solid var(--line);
+  border-radius: var(--radius-sm);
+  font-size: var(--t-xs);
+  font-weight: 500;
+  transition:
+    background-color 120ms ease,
+    border-color 120ms ease;
+}
+
+.complete:hover {
+  background-color: var(--pine-tint);
+  border-color: var(--pine);
+}
+
+.complete:disabled {
+  color: var(--ink-muted);
+  background-color: transparent;
+  border-color: var(--line);
+  cursor: not-allowed;
+}

@@ -1,0 +1,215 @@
+/* ==========================================================================
+   TaskDetail — import as: import styles from "./TaskDetail.module.css";
+   ========================================================================== */
+
+.panel {
+  display: flex;
+  flex-direction: column;
+  padding: var(--s5);
+  background-color: var(--card);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+}
+
+/* --- Placeholder state -------------------------------------------------- */
+
+.placeholder {
+  padding: var(--s6) var(--s5);
+  background-color: transparent;
+  border: 1px dashed var(--line-strong);
+  border-radius: var(--radius);
+  color: var(--ink-muted);
+  font-size: var(--t-sm);
+  text-align: center;
+}
+
+/* --- Header ------------------------------------------------------------- */
+
+.headingRow {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: var(--s2);
+  padding-bottom: var(--s3);
+  margin-bottom: var(--s4);
+  border-bottom: 2px solid var(--ink);
+}
+
+.heading {
+  font-size: var(--t-xs);
+  font-weight: 600;
+  color: var(--ink-soft);
+}
+
+form.panel > .heading {
+  padding-bottom: var(--s3);
+  margin-bottom: var(--s4);
+  border-bottom: 2px solid var(--ink);
+}
+
+.close {
+  width: 24px;
+  height: 24px;
+  margin: -4px -4px 0 0;
+  border-radius: var(--radius-sm);
+  color: var(--ink-muted);
+  font-size: var(--t-md);
+  line-height: 1;
+}
+
+.close:hover {
+  background-color: var(--column);
+  color: var(--ink);
+}
+
+.title {
+  font-size: var(--t-lg);
+  margin-bottom: var(--s3);
+  overflow-wrap: anywhere;
+}
+
+.description {
+  color: var(--ink-soft);
+  font-size: var(--t-base);
+  line-height: 1.6;
+  max-width: 60ch;
+  overflow-wrap: anywhere;
+  white-space: pre-wrap;
+}
+
+.muted {
+  color: var(--ink-muted);
+  font-style: italic;
+}
+
+/* --- Meta --------------------------------------------------------------- */
+
+.meta {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  margin-top: var(--s5);
+  padding-top: var(--s4);
+  border-top: 1px solid var(--line);
+}
+
+.metaLabel {
+  font-size: var(--t-xs);
+  color: var(--ink-muted);
+}
+
+/* --- Edit form ---------------------------------------------------------- */
+
+.field {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  margin-bottom: var(--s4);
+}
+
+.label {
+  font-size: var(--t-sm);
+  font-weight: 500;
+  color: var(--ink-soft);
+}
+
+.input,
+.textarea {
+  width: 100%;
+  padding: 9px var(--s3);
+  background-color: var(--card);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  font-size: var(--t-base);
+}
+
+.input:focus,
+.textarea:focus {
+  outline: none;
+  border-color: var(--pine);
+  box-shadow: 0 0 0 3px var(--pine-tint);
+}
+
+.textarea {
+  min-height: 110px;
+  line-height: 1.55;
+}
+
+.checkbox {
+  display: flex;
+  align-items: center;
+  gap: var(--s2);
+  font-size: var(--t-sm);
+  font-weight: 500;
+  cursor: pointer;
+}
+
+.checkbox input {
+  width: 16px;
+  height: 16px;
+  accent-color: var(--pine);
+}
+
+/* --- Actions ------------------------------------------------------------ */
+
+.actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--s2);
+  margin-top: var(--s5);
+  padding-top: var(--s4);
+  border-top: 1px solid var(--line);
+}
+
+.primary,
+.secondary,
+.danger {
+  padding: 7px var(--s4);
+  border-radius: var(--radius);
+  font-size: var(--t-sm);
+  font-weight: 500;
+  transition:
+    background-color 120ms ease,
+    color 120ms ease;
+}
+
+.primary {
+  background-color: var(--pine);
+  color: #fff;
+}
+
+.primary:hover {
+  background-color: var(--pine-dark);
+}
+
+.secondary {
+  border: 1px solid var(--line);
+  color: var(--ink-soft);
+}
+
+.secondary:hover {
+  background-color: var(--column);
+  color: var(--ink);
+}
+
+.danger {
+  margin-left: auto;
+  color: var(--danger);
+}
+
+.danger:hover {
+  background-color: var(--danger-tint);
+}
+
+.primary:disabled,
+.secondary:disabled,
+.danger:disabled {
+  opacity: 0.55;
+  cursor: not-allowed;
+}
+
+@media (max-width: 720px) {
+  .panel {
+    padding: var(--s4);
+  }
+}
